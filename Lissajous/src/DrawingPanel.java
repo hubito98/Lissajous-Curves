@@ -3,9 +3,12 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JButton;
 import javax.swing.JPanel;
 
 public class DrawingPanel extends JPanel {
@@ -14,6 +17,9 @@ public class DrawingPanel extends JPanel {
 					amplitudeX, amplitudeY;
 	private double padding = 40, middleX, middleY;
 	private double time = 0;
+	private boolean running;
+	
+	private JButton startStopButton, restartButton;
 	
 	private List<Point> points;
 	
@@ -49,8 +55,45 @@ public class DrawingPanel extends JPanel {
 		 */
 		middleX = amplitudeX + padding;
 		middleY = amplitudeY + padding;
-		
 		points = new ArrayList<Point>(1000);
+		initButtons();	
+		running = true;
+	}
+	
+	public void initButtons() {
+		startStopButton = new JButton("Stop");
+			startStopButton.addActionListener(new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					if(running) {
+						running = false;
+						startStopButton.setText("Start");
+					}else {
+						running = true;
+						startStopButton.setText("Stop");
+						repaint();
+					}
+				}
+			});
+		
+		restartButton = new JButton("Restart");
+			restartButton.addActionListener(new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					running = false;
+					points = new ArrayList<Point>(1000);
+					time = 0;
+					calculateFirstPoint();
+					startStopButton.setText("Stop");
+					running = true;
+					repaint();
+				}
+			});
+	
+		add(startStopButton);
+		add(restartButton);
 	}
 	
 	public void calculateFirstPoint() {
@@ -69,7 +112,8 @@ public class DrawingPanel extends JPanel {
 		calculateCoordinates();
 		drawCurve(g2d);
 		
-		repaint();
+		if(running)
+			repaint();
 	}
 	
 	public void calculateCoordinates() {
