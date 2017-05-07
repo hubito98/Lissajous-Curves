@@ -22,6 +22,7 @@ public class MainPanel extends JPanel {
 
 	public static final int WIDTH = 480;
 
+	private DrawingFrame drawingFrame;
 	private JPanel panelX, panelY;
 	private JTextField speedX, speedY, startLocationX,
 						startLocationY, amplitudeX, amplitudeY;
@@ -32,6 +33,7 @@ public class MainPanel extends JPanel {
 	private JButton okButton;
 	private double dSpeedX, dSpeedY, dStartLocationX, 
 					dStartLocationY, dAmplitudeX, dAmplitudeY;
+	private boolean isFirst = true;
 
 	public MainPanel() {
 		super();
@@ -60,14 +62,14 @@ public class MainPanel extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				loadValues();
-				
-				Thread thread = new Thread(new Runnable() {
-					@Override
-					public void run() {
-						new DrawingFrame(dSpeedX, dSpeedY, dStartLocationX, dStartLocationY, dAmplitudeX, dAmplitudeY);
-					}
-				});
-				thread.start();
+				if(!isFirst) {
+					drawingFrame.dispose();
+					
+				}else {
+					isFirst = false;
+				}
+				drawingFrame = new DrawingFrame(dSpeedX, dSpeedY, dStartLocationX, 
+						dStartLocationY, dAmplitudeX, dAmplitudeY);	
 			}
 		});
 	}
