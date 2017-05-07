@@ -20,7 +20,7 @@ import javax.swing.event.ChangeListener;
 
 public class MainPanel extends JPanel {
 
-	public static final int WIDTH = 480;
+	public static final int WIDTH = 700;
 
 	private DrawingFrame drawingFrame;
 	private JPanel panelX, panelY;
@@ -108,11 +108,11 @@ public class MainPanel extends JPanel {
 	}
 	
 	public void initTextFields() {
-		speedX = new JTextField("2", 3);
+		speedX = new JTextField("2.3", 3);
 		startLocationX = new JTextField("0", 3);
 		amplitudeX = new JTextField("200", 4);
 		
-		speedY = new JTextField("3", 3);
+		speedY = new JTextField("3.2", 3);
 		startLocationY = new JTextField("0", 3);
 		amplitudeY = new JTextField("200", 4);
 	}

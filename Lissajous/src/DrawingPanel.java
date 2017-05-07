@@ -109,11 +109,22 @@ public class DrawingPanel extends JPanel {
 		
 		Graphics2D g2d = (Graphics2D) g;
 		
+		drawCoordinateSystem(g2d);
 		calculateCoordinates();
 		drawCurve(g2d);
 		
 		if(running)
 			repaint();
+	}
+	
+	public void drawCoordinateSystem(Graphics2D g2d) {
+		g2d.setColor(Color.WHITE);
+		g2d.fillRect((int)padding, (int)padding, (int)(amplitudeX * 2), (int)(amplitudeY * 2));
+		
+		g2d.setColor(Color.BLACK);
+		g2d.drawLine((int)middleX, (int)padding, (int)middleX, (int)(amplitudeY * 2 + padding));
+		
+		g2d.drawLine((int)padding, (int)middleY, (int)(amplitudeX * 2 + padding), (int)middleY);
 	}
 	
 	public void calculateCoordinates() {
@@ -131,7 +142,7 @@ public class DrawingPanel extends JPanel {
 			int y1 = (int) points.get(i-1).getY();
 			int y2 = (int) points.get(i).getY();
 			
-			g2d.setColor(Color.black);
+			g2d.setColor(Color.red);
 			g2d.drawLine(x1 + (int)middleX, y1 + (int)middleY, x2 + (int)middleX, y2 + (int)middleY);
 		}
 	}
