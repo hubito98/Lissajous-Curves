@@ -1,3 +1,4 @@
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -10,6 +11,12 @@ import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
+
+/**
+ * 
+ * @author Hubert Skrzypczak
+ *
+ */
 
 public class DrawingPanel extends JPanel {
 	
@@ -43,10 +50,11 @@ public class DrawingPanel extends JPanel {
 		this.amplitudeX = amplitudeX;
 		this.amplitudeY = amplitudeY;
 		
+		setDoubleBuffered(true);
 		setPreferredSize(new Dimension((int)(amplitudeX * 2 + 2 * padding), (int)(amplitudeY * 2 + 2 * padding)));
 		
 		init();
-		calculateFirstPoint();
+		calculateCoordinates();
 	}
 	
 	public void init() {
@@ -85,22 +93,14 @@ public class DrawingPanel extends JPanel {
 					running = false;
 					points = new ArrayList<Point>(1000);
 					time = 0;
-					calculateFirstPoint();
-					startStopButton.setText("Stop");
-					running = true;
+					calculateCoordinates();
+					startStopButton.setText("Start");
 					repaint();
 				}
 			});
 	
 		add(startStopButton);
 		add(restartButton);
-	}
-	
-	public void calculateFirstPoint() {
-		double x = amplitudeX * Math.sin(speedX * time + startLocationX);
-		double y = amplitudeY * Math.sin(speedY * time + startLocationY);
-		points.add(new Point((int)x, (int)y));
-		time += 0.001;
 	}
 	
 	@Override
@@ -113,8 +113,9 @@ public class DrawingPanel extends JPanel {
 		calculateCoordinates();
 		drawCurve(g2d);
 		
-		if(running)
+		if(running){
 			repaint();
+		}
 	}
 	
 	public void drawCoordinateSystem(Graphics2D g2d) {
